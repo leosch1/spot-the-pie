@@ -22,7 +22,7 @@ export default Vue.extend({
 .main {
   background-color: #282828;
   color: #ffffff;
-  font-family: "Montserrat";
+  font-family: "Montserrat" !important;
 }
 
 .v-application .main * {
