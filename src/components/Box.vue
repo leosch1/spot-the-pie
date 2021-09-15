@@ -23,11 +23,4 @@ export default Vue.extend({
   font-size: 13px;
 }
 
-.box p {
-  margin: 0;
-}
-
-.box p:nth-child(1) {
-  margin-bottom: 4px;
-}
 </style>

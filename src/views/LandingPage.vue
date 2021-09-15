@@ -14,10 +14,46 @@
     />
     <Box class="callToAction">
       <p>
-        Go to Spot-The-Pie.com on your friend’s phone and enter your matching
-        code there. (Or the other way around)
+        Go to <a href="Spot-The-Pie.com" target="_blank">Spot-The-Pie.com</a> on
+        your friend’s phone and enter your matching code there. (Or the other
+        way around)
       </p>
+      <div class="d-flex justify-center align-center">
+        <p class="matchingCodeLabel">Friend's matching code:</p>
+        <div class="matchingCodeContainer">
+          <v-text-field
+            class="shrink rounded-lg"
+            v-model="matchingCode"
+            single-line
+            dense
+            hide-details
+            solo
+            type="number"
+            background-color="#B3B3B3"
+          />
+        </div>
+      </div>
+      <p class="ownCode">Your matching code: <span>382771</span></p>
     </Box>
+    <h2>How to use Spot-The-Pie?</h2>
+    <v-row>
+      <v-col cols="6">
+        <ol>
+          <li>
+            Enter your friend’s code on your device OR enter your code on your
+            friend’s device.
+          </li>
+          <li>Both log in with their Spotify account on own device.</li>
+          <li>Listen to the common playlist!</li>
+        </ol>
+      </v-col>
+      <v-col cols="6">
+        <v-img
+          :src="require('../assets/commonPlaylist.png')"
+          class="commonPlaylist"
+        />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -34,7 +70,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   padding: 40px;
 }
@@ -49,11 +85,58 @@ export default Vue.extend({
   color: #b3b3b3;
 }
 
+.introduction p:nth-child(1) {
+  margin-bottom: 4px;
+}
+
 .illustration {
   margin: 20px 10px;
 }
 
 .callToAction {
   color: #ffffff;
+}
+
+.callToAction a {
+  color: #1bb954;
+  text-decoration: none;
+}
+
+.matchingCodeLabel {
+  font-size: 14px;
+}
+
+.matchingCodeContainer {
+  width: 5rem;
+  margin-left: 10px;
+}
+
+.ownCode {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  text-align: center;
+  color: #b3b3b3;
+}
+
+.ownCode span {
+  color: #1db954;
+}
+
+.wrapper h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.wrapper ol li {
+  list-style-position: inside;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 15px;
+  color: #B3B3B3;
+}
+
+.commonPlaylist {
+  margin: 5px 15px 0 15px;
 }
 </style>

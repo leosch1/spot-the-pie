@@ -24,4 +24,9 @@ export default Vue.extend({
   color: #ffffff;
   font-family: "Montserrat";
 }
+
+.v-application .main * {
+  margin: 0;
+  padding: 0;
+}
 </style>
