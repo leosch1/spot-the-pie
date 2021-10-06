@@ -1,16 +1,16 @@
 <template>
   <div class="wrapper">
-    <h1>You're almost done!</h1>
-    <Box class="login">
-      <p>The last step is for you and your friends to now log in with your spotify account</p>
+    <h1>Successfull match!</h1>
+    <Box class="info-box">
+      <p>Only one more step!</p>
+      <p>Please log in using your Spotify account.</p>
     </Box>
-    <div class="buttonWrapper">
-    <v-btn class="loginS"
-      rounded
-      color="green"
-      x-large
-    >LOG IN WITH SPOTIFY</v-btn>
-    </div>
+    <div style="flex-grow: 1"></div>
+    <v-img :src="require('../assets/running.gif')"> </v-img>
+    <div style="flex-grow: 1"></div>
+    <v-btn class="button" rounded color="#1db954" x-large href="http://localhost:3000/login">
+      LOG IN WITH SPOTIFY
+    </v-btn>
   </div>
 </template>
 
@@ -20,43 +20,33 @@ import Box from '../components/Box.vue';
 
 export default Vue.extend({
   name: 'Login',
-
   components: {
     Box,
   },
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
-  padding: 10px;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper h1 {
-  margin: 20px 10px 10px 10px;
+  margin-bottom: 20px;
   font-weight: 600;
   font-size: 24px;
 }
 
-.login {
-  font-family: "Montserrat" !important;
-  margin: 10px 0px 40px 0px;
+.info-box {
   color: #b3b3b3;
-  font-style: normal;
+}
+
+.button {
+  align-self: center;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
-
-}
-
-.loginS {
   color: #ffffff !important;
-  font-style: normal;
-}
-
-.buttonWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 </style>

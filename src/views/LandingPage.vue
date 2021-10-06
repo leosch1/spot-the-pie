@@ -102,7 +102,7 @@ export default Vue.extend({
         if (response.status !== 201) {
           console.error('An error occured');
         }
-        this.$router.push('Login');
+        this.$router.push('/login');
       });
     },
   },
