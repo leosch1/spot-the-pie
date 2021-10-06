@@ -23,17 +23,22 @@
         <div class="matchingCodeContainer">
           <v-text-field
             class="shrink rounded-lg"
-            v-model="matchingCode"
+            @input="inputMatchingCode"
             single-line
             dense
             hide-details
+            maxlength="6"
             solo
-            type="number"
+            type="text"
             background-color="#B3B3B3"
           />
         </div>
       </div>
-      <p class="ownCode">Your matching code: <span>382771</span></p>
+      <p class="ownCode">
+        Your matching code:
+        <span v-if="myMatchingCode">{{ myMatchingCode }}</span>
+        <span v-else> Loading... </span>
+      </p>
     </Box>
     <h2>How to use Spot-The-Pie?</h2>
     <v-row>
@@ -66,6 +71,40 @@ export default Vue.extend({
 
   components: {
     Box,
+  },
+  data() {
+    return {
+      friendsMatchingCode: '000',
+      myMatchingCode: '',
+    };
+  },
+  mounted() {
+    fetch('http://localhost:3000/myMatchingCode')
+      .then((response) => response.text())
+      .then((response) => {
+        this.myMatchingCode = response;
+      });
+  },
+  methods: {
+    inputMatchingCode(codeInput: string) {
+      if (codeInput.length < 6) {
+        return;
+      }
+      const data = {
+        myMatchingCode: this.myMatchingCode,
+        friendsMatchingCode: codeInput.substring(0, 6),
+      };
+      fetch('http://localhost:3000/match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        if (response.status !== 201) {
+          console.error('An error occured');
+        }
+        this.$router.push('Login');
+      });
+    },
   },
 });
 </script>
@@ -133,7 +172,7 @@ export default Vue.extend({
   margin-bottom: 0.4rem;
   font-weight: 600;
   font-size: 15px;
-  color: #B3B3B3;
+  color: #b3b3b3;
 }
 
 .commonPlaylist {
