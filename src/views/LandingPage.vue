@@ -83,6 +83,7 @@ export default Vue.extend({
       .then((response) => response.text())
       .then((response) => {
         this.myMatchingCode = response;
+        localStorage.setItem('myMatchingCode', response);
       });
   },
   methods: {
@@ -101,6 +102,7 @@ export default Vue.extend({
       }).then((response) => {
         if (response.status !== 201) {
           console.error('An error occured');
+          return;
         }
         this.$router.push('/login');
       });

@@ -8,7 +8,13 @@
     <div style="flex-grow: 1"></div>
     <v-img :src="require('../assets/running.gif')"> </v-img>
     <div style="flex-grow: 1"></div>
-    <v-btn class="button" rounded color="#1db954" x-large href="http://localhost:3000/login">
+    <v-btn
+      class="button"
+      rounded
+      color="#1db954"
+      x-large
+      href="http://localhost:3000/login"
+    >
       LOG IN WITH SPOTIFY
     </v-btn>
   </div>
