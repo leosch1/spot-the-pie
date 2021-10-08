@@ -1,6 +1,15 @@
 <template>
   <div class="wrapper">
-    <div v-if="playlistReady" class="wrapper"></div>
+    <div v-if="playlistReady" class="wrapper">
+      <iframe
+        src="https://open.spotify.com/embed/playlist/3pLwPBzW6OzE7tS7JtOl1h?theme=0"
+        width="100%"
+        height="380"
+        frameBorder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      ></iframe>
+    </div>
     <div v-else-if="generatingPlaylist"></div>
     <div v-else>
       <h1>Waiting for your friend to log in..</h1>
@@ -28,18 +37,48 @@ export default Vue.extend({
         myMatchingCode: localStorage.myMatchingCode,
         spotifyAccessToken: accessToken,
       };
-      fetch('http://localhost:3000/commonPlaylist', {
+      fetch('http://localhost:3000/generatePlaylist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       }).then((response) => {
         if (response.status !== 202) {
-          console.error('An error occured');
+          console.error(response);
           return;
         }
-        console.log(response);
+        console.log(response.status);
       });
     }
+  },
+  created() {
+    const interval = setInterval(async () => {
+      const data = {
+        myMatchingCode: localStorage.myMatchingCode,
+      };
+      const response = await fetch('http://localhost:3000/commonPlaylist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      switch (response.status) {
+        case 210:
+          console.log('210 WAITING_FOR_FRIEND_LOGIN');
+          break;
+        case 211:
+          console.log('211 GENERATING_PLAYLIST');
+          this.generatingPlaylist = true;
+          break;
+        case 200:
+          clearInterval(interval);
+          console.log(await response.text());
+          this.generatingPlaylist = false;
+          this.playlistReady = true;
+          break;
+        default:
+          break;
+      }
+    }, 1000);
   },
 });
 </script>

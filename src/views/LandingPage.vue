@@ -76,7 +76,12 @@ export default Vue.extend({
     return {
       friendsMatchingCode: '000',
       myMatchingCode: '',
+      interval: 0,
     };
+  },
+  beforeMount() {
+    localStorage.removeItem('myMatchingCode');
+    this.myMatchingCode = '';
   },
   mounted() {
     fetch('http://localhost:3000/myMatchingCode')
@@ -84,7 +89,30 @@ export default Vue.extend({
       .then((response) => {
         this.myMatchingCode = response;
         localStorage.setItem('myMatchingCode', response);
+      })
+      .catch((error) => {
+        console.error(error);
       });
+    this.interval = setInterval(() => {
+      const data = {
+        myMatchingCode: this.myMatchingCode,
+      };
+      fetch('http://localhost:3000/amIMatched', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((matched) => {
+          if (matched) {
+            clearInterval(this.interval);
+            this.$router.push('/login');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, 1000);
   },
   methods: {
     inputMatchingCode(codeInput: string) {
@@ -101,9 +129,10 @@ export default Vue.extend({
         body: JSON.stringify(data),
       }).then((response) => {
         if (response.status !== 201) {
-          console.error('An error occured');
+          console.error(response);
           return;
         }
+        clearInterval(this.interval);
         this.$router.push('/login');
       });
     },
