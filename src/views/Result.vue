@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <div v-if="playlistReady" class="wrapper">
+    <div v-if="playlistURI" class="wrapper">
       <iframe
-        src="https://open.spotify.com/embed/playlist/3pLwPBzW6OzE7tS7JtOl1h?theme=0"
+        :src="`https://open.spotify.com/embed/playlist/${playlistURI}?theme=0`"
         width="100%"
         height="380"
         frameBorder="0"
@@ -10,7 +10,9 @@
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       ></iframe>
     </div>
-    <div v-else-if="generatingPlaylist"></div>
+    <div v-else-if="generatingPlaylist">
+      <h1>Generating playlist</h1>
+    </div>
     <div v-else>
       <h1>Waiting for your friend to log in..</h1>
     </div>
@@ -25,17 +27,18 @@ export default Vue.extend({
   components: {},
   data() {
     return {
-      playlistReady: false,
+      spotifyAccessToken: '',
       generatingPlaylist: false,
+      playlistURI: '',
     };
   },
   mounted() {
     const result = this.$route.hash.match(/access_token=([-\w]+)/);
     if (result) {
-      const accessToken = result[1];
+      [, this.spotifyAccessToken] = result;
       const data = {
         myMatchingCode: localStorage.myMatchingCode,
-        spotifyAccessToken: accessToken,
+        spotifyAccessToken: this.spotifyAccessToken,
       };
       fetch('http://localhost:3000/generatePlaylist', {
         method: 'POST',
@@ -49,11 +52,10 @@ export default Vue.extend({
         console.log(response.status);
       });
     }
-  },
-  created() {
     const interval = setInterval(async () => {
       const data = {
         myMatchingCode: localStorage.myMatchingCode,
+        spotifyAccessToken: this.spotifyAccessToken,
       };
       const response = await fetch('http://localhost:3000/commonPlaylist', {
         method: 'POST',
@@ -71,9 +73,8 @@ export default Vue.extend({
           break;
         case 200:
           clearInterval(interval);
-          console.log(await response.text());
+          this.playlistURI = await response.text();
           this.generatingPlaylist = false;
-          this.playlistReady = true;
           break;
         default:
           break;
