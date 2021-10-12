@@ -40,7 +40,7 @@ export default Vue.extend({
         myMatchingCode: localStorage.myMatchingCode,
         spotifyAccessToken: this.spotifyAccessToken,
       };
-      fetch('http://localhost:3000/generatePlaylist', {
+      fetch(`${process.env.VUE_APP_BACKEND_URL}/generatePlaylist`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -57,7 +57,7 @@ export default Vue.extend({
         myMatchingCode: localStorage.myMatchingCode,
         spotifyAccessToken: this.spotifyAccessToken,
       };
-      const response = await fetch('http://localhost:3000/commonPlaylist', {
+      const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

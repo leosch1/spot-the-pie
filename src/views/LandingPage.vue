@@ -84,7 +84,7 @@ export default Vue.extend({
     this.myMatchingCode = '';
   },
   mounted() {
-    fetch('http://localhost:3000/myMatchingCode')
+    fetch(`${process.env.VUE_APP_BACKEND_URL}/myMatchingCode`)
       .then((response) => response.text())
       .then((response) => {
         this.myMatchingCode = response;
@@ -97,7 +97,7 @@ export default Vue.extend({
       const data = {
         myMatchingCode: this.myMatchingCode,
       };
-      fetch('http://localhost:3000/amIMatched', {
+      fetch(`${process.env.VUE_APP_BACKEND_URL}/amIMatched`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -123,7 +123,7 @@ export default Vue.extend({
         myMatchingCode: this.myMatchingCode,
         friendsMatchingCode: codeInput.substring(0, 6),
       };
-      fetch('http://localhost:3000/match', {
+      fetch(`${process.env.VUE_APP_BACKEND_URL}/match`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

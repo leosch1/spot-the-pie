@@ -13,7 +13,7 @@
       rounded
       color="#1db954"
       x-large
-      href="http://localhost:3000/login"
+      :href="`${backendURL}/login`"
     >
       LOG IN WITH SPOTIFY
     </v-btn>
@@ -28,6 +28,9 @@ export default Vue.extend({
   name: 'Login',
   components: {
     Box,
+  },
+  computed: {
+    backendURL: () => process.env.VUE_APP_BACKEND_URL,
   },
 });
 </script>
