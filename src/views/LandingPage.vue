@@ -59,6 +59,12 @@
         />
       </v-col>
     </v-row>
+    <v-snackbar :value="intervalCounter === intervalCounterMax" :timeout="-1">
+      <span class="mx-3">Timeout, Please refresh the page.</span>
+      <template>
+        <v-btn color="#1bb954" small text @click="refreshPage">Refresh</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -77,6 +83,8 @@ export default Vue.extend({
       friendsMatchingCode: '000',
       myMatchingCode: '',
       interval: 0,
+      intervalCounter: 0,
+      intervalCounterMax: 3600,
     };
   },
   beforeMount() {
@@ -93,46 +101,57 @@ export default Vue.extend({
       .catch((error) => {
         console.error(error);
       });
-    this.interval = setInterval(() => {
+    this.interval = setInterval(async () => {
+      this.intervalCounter += 1;
+      if (this.intervalCounter === this.intervalCounterMax) {
+        clearInterval(this.interval);
+      }
       const data = {
         myMatchingCode: this.myMatchingCode,
       };
-      fetch(`${process.env.VUE_APP_BACKEND_URL}/amIMatched`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((matched) => {
-          if (matched) {
-            clearInterval(this.interval);
-            this.$router.push('/login');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      const response = await fetch(
+        `${process.env.VUE_APP_BACKEND_URL}/amIMatched`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        },
+      );
+
+      if (response.status !== 200) {
+        return;
+      }
+      const matched = await response.json();
+      if (matched) {
+        this.$router.push('/login');
+        clearInterval(this.interval);
+      }
     }, 1000);
   },
   methods: {
+    refreshPage() {
+      window.location.reload();
+    },
     inputMatchingCode(codeInput: string) {
       if (codeInput.length < 6) {
         return;
       }
       const data = {
-        myMatchingCode: this.myMatchingCode,
-        friendsMatchingCode: codeInput.substring(0, 6),
+        matchingCodes: [this.myMatchingCode, codeInput.substring(0, 6)],
       };
+      if (data.matchingCodes[0] === data.matchingCodes[1]) {
+        return;
+      }
+      clearInterval(this.interval);
       fetch(`${process.env.VUE_APP_BACKEND_URL}/match`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      }).then((response) => {
+      }).then(async (response) => {
         if (response.status !== 201) {
-          console.error(response);
+          console.error(await response.text());
           return;
         }
-        clearInterval(this.interval);
         this.$router.push('/login');
       });
     },

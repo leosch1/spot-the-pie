@@ -11,11 +11,20 @@
       ></iframe>
     </div>
     <div v-else-if="generatingPlaylist">
-      <h1>Generating playlist</h1>
+      <h1>Generating playlist..</h1>
     </div>
-    <div v-else>
+    <div v-else-if="waitingForFriend">
       <h1>Waiting for your friend to log in..</h1>
     </div>
+    <div v-else class="text-center">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
+    <v-snackbar :value="intervalCounter === intervalCounterMax" :timeout="-1">
+      <span class="mx-3">Timeout, Please refresh the page.</span>
+      <template>
+        <v-btn color="#1bb954" small text @click="refreshPage">Refresh</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -29,7 +38,11 @@ export default Vue.extend({
     return {
       spotifyAccessToken: '',
       generatingPlaylist: false,
+      waitingForFriend: false,
       playlistURI: '',
+      interval: 0,
+      intervalCounter: 0,
+      intervalCounterMax: 1,
     };
   },
   mounted() {
@@ -47,39 +60,49 @@ export default Vue.extend({
       }).then((response) => {
         if (response.status !== 202) {
           console.error(response);
-          return;
         }
-        console.log(response.status);
       });
     }
-    const interval = setInterval(async () => {
+    this.interval = setInterval(async () => {
+      this.intervalCounter += 1;
+      if (this.intervalCounter === this.intervalCounterMax) {
+        clearInterval(this.interval);
+      }
       const data = {
         myMatchingCode: localStorage.myMatchingCode,
         spotifyAccessToken: this.spotifyAccessToken,
       };
-      const response = await fetch(`${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        },
+      );
 
       switch (response.status) {
         case 210:
-          console.log('210 WAITING_FOR_FRIEND_LOGIN');
+          this.waitingForFriend = true;
           break;
         case 211:
-          console.log('211 GENERATING_PLAYLIST');
           this.generatingPlaylist = true;
           break;
         case 200:
-          clearInterval(interval);
+          clearInterval(this.interval);
           this.playlistURI = await response.text();
+          this.waitingForFriend = false;
           this.generatingPlaylist = false;
           break;
         default:
           break;
       }
     }, 1000);
+  },
+  methods: {
+    refreshPage() {
+      window.location.reload();
+    },
   },
 });
 </script>
