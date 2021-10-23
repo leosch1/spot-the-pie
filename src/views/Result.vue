@@ -42,7 +42,7 @@ export default Vue.extend({
       playlistURI: '',
       interval: 0,
       intervalCounter: 0,
-      intervalCounterMax: 1,
+      intervalCounterMax: 3600,
     };
   },
   mounted() {
