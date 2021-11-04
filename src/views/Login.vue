@@ -33,6 +33,13 @@
 import Vue from 'vue';
 import Box from '../components/Box.vue';
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    MusicKit: any; // TODO: Remove workaround
+  }
+}
+
 export default Vue.extend({
   name: 'Login',
   components: {
@@ -43,8 +50,7 @@ export default Vue.extend({
   },
   methods: {
     async loginWithAppleMusic() {
-      // eslint-disable-next-line no-undef
-      const music = MusicKit.getInstance(); // TODO: Fix 'Cannot find'
+      const music = window.MusicKit.getInstance();
       const token: string = await music.authorize();
       if (token && token.length) {
         this.$router.push(
