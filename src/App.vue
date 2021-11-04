@@ -14,10 +14,6 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'App',
-
-  data: () => ({
-    //
-  }),
 });
 </script>
 
@@ -26,10 +22,13 @@ body {
   background-color: #535353;
 }
 
+body * {
+  font-family: Montserrat, sans-serif;
+}
+
 .main {
   background-color: #282828;
   color: #ffffff;
-  font-family: "Montserrat" !important;
 }
 
 .v-application .main * {
@@ -39,10 +38,9 @@ body {
 
 footer.v-footer.footer {
   background-color: #535353;
-  color: #B3B3B3;
+  color: #b3b3b3;
   font-size: 12px;
   font-weight: 600;
-  font-family: "Montserrat" !important;
 }
 
 footer span {

@@ -1,0 +1,14 @@
+.button {
+  margin-top: 1.5rem !important;
+  align-self: center;
+  font-weight: 600;
+  width: 80%;
+}
+
+.button.spotify {
+  color: #ffffff !important;
+}
+
+.button.appleMusic {
+  color: #fa2d55 !important;
+}

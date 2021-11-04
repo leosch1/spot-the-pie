@@ -9,13 +9,22 @@
     <v-img :src="require('../assets/running.gif')"> </v-img>
     <div style="flex-grow: 1"></div>
     <v-btn
-      class="button"
+      class="button spotify"
       rounded
       color="#1db954"
       x-large
-      :href="`${backendURL}/login`"
+      :href="`${backendURL}/loginSpotify`"
     >
-      LOG IN WITH SPOTIFY
+      Use Spotify
+    </v-btn>
+    <v-btn
+      class="button appleMusic"
+      rounded
+      color="#EEEEF0"
+      x-large
+      @click="loginWithAppleMusic"
+    >
+      Use Apple Music
     </v-btn>
   </div>
 </template>
@@ -31,6 +40,20 @@ export default Vue.extend({
   },
   computed: {
     backendURL: () => process.env.VUE_APP_BACKEND_URL,
+  },
+  methods: {
+    async loginWithAppleMusic() {
+      // eslint-disable-next-line no-undef
+      const music = MusicKit.getInstance(); // TODO: Fix 'Cannot find'
+      const token: string = await music.authorize();
+      if (token && token.length) {
+        this.$router.push(
+          `/result?musicApi=APPLE_MUSIC&access_token=${encodeURIComponent(
+            token,
+          )}`,
+        );
+      }
+    },
   },
 });
 </script>
@@ -51,11 +74,5 @@ export default Vue.extend({
 
 .info-box {
   color: #b3b3b3;
-}
-
-.button {
-  align-self: center;
-  font-weight: 600;
-  color: #ffffff !important;
 }
 </style>

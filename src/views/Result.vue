@@ -1,14 +1,31 @@
 <template>
   <div class="wrapper">
-    <div v-if="playlistURI" class="wrapper">
-      <iframe
-        :src="`https://open.spotify.com/embed/playlist/${playlistURI}?theme=0`"
-        width="100%"
-        height="380"
-        frameBorder="0"
-        allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      ></iframe>
+    <div v-if="commonPlaylistIdentifier" class="wrapper">
+      <div v-if="commonPlaylistIdentifier === 'EMPTY'">
+        <h1>No common tracks...😢</h1>
+      </div>
+      <div v-else-if="musicApi === 'SPOTIFY'">
+        <iframe
+          :src="`https://open.spotify.com/embed/playlist/${commonPlaylistIdentifier}?theme=0`"
+          width="100%"
+          height="380"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        ></iframe>
+      </div>
+      <div v-else-if="musicApi === 'APPLE_MUSIC'">
+        <v-btn
+          class="button appleMusic"
+          rounded
+          color="#EEEEF0"
+          x-large
+          :href="`https://music.apple.com/library/playlist/${commonPlaylistIdentifier}`"
+          target="_blank"
+        >
+          Open Playlist on Apple Music
+        </v-btn>
+      </div>
     </div>
     <div v-else-if="generatingPlaylist">
       <h1>Generating playlist..</h1>
@@ -36,68 +53,80 @@ export default Vue.extend({
   components: {},
   data() {
     return {
-      spotifyAccessToken: '',
+      musicApi: '',
+      musicApiToken: '',
       generatingPlaylist: false,
       waitingForFriend: false,
-      playlistURI: '',
+      commonPlaylistIdentifier: '',
       interval: 0,
       intervalCounter: 0,
-      intervalCounterMax: 3600,
+      intervalCounterMax: 600,
     };
   },
   mounted() {
-    const result = this.$route.hash.match(/access_token=([-\w]+)/);
-    if (result) {
-      [, this.spotifyAccessToken] = result;
-      const data = {
-        myMatchingCode: localStorage.myMatchingCode,
-        spotifyAccessToken: this.spotifyAccessToken,
-      };
-      fetch(`${process.env.VUE_APP_BACKEND_URL}/generatePlaylist`, {
+    const musicApi = this.$route.fullPath.match(/musicApi=([\w]+)/);
+    const result = this.$route.fullPath.match(/access_token=([%-\w]+)/);
+    if (result && musicApi) {
+      [, this.musicApi] = musicApi;
+      [, this.musicApiToken] = result;
+      this.musicApiToken = decodeURIComponent(this.musicApiToken);
+      fetch(`${process.env.VUE_APP_BACKEND_URL}/fetchSavedTracks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          myMatchingCode: localStorage.myMatchingCode,
+          musicApi: this.musicApi,
+          musicApiToken: this.musicApiToken,
+        }),
       }).then((response) => {
-        if (response.status !== 202) {
+        if (response.status !== 201) {
           console.error(response);
+        } else {
+          this.interval = setInterval(async () => {
+            this.intervalCounter += 1;
+            if (this.intervalCounter === this.intervalCounterMax) {
+              clearInterval(this.interval);
+            }
+            const commonPlaylistResponse = await fetch(
+              `${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  myMatchingCode: localStorage.myMatchingCode,
+                  musicApiToken: this.musicApiToken,
+                  musicApi: this.musicApi,
+                }),
+              },
+            );
+
+            console.info(commonPlaylistResponse);
+            switch (commonPlaylistResponse.status) {
+              case 210:
+                this.waitingForFriend = true;
+                break;
+              case 211:
+                this.generatingPlaylist = true;
+                break;
+              case 212:
+                clearInterval(this.interval);
+                this.commonPlaylistIdentifier = 'EMPTY';
+                this.waitingForFriend = false;
+                this.generatingPlaylist = false;
+                break;
+              case 200:
+                clearInterval(this.interval);
+                this.commonPlaylistIdentifier = await commonPlaylistResponse.text();
+                this.waitingForFriend = false;
+                this.generatingPlaylist = false;
+                break;
+              default:
+                break;
+            }
+          }, 1000);
         }
       });
     }
-    this.interval = setInterval(async () => {
-      this.intervalCounter += 1;
-      if (this.intervalCounter === this.intervalCounterMax) {
-        clearInterval(this.interval);
-      }
-      const data = {
-        myMatchingCode: localStorage.myMatchingCode,
-        spotifyAccessToken: this.spotifyAccessToken,
-      };
-      const response = await fetch(
-        `${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        },
-      );
-
-      switch (response.status) {
-        case 210:
-          this.waitingForFriend = true;
-          break;
-        case 211:
-          this.generatingPlaylist = true;
-          break;
-        case 200:
-          clearInterval(this.interval);
-          this.playlistURI = await response.text();
-          this.waitingForFriend = false;
-          this.generatingPlaylist = false;
-          break;
-        default:
-          break;
-      }
-    }, 1000);
   },
   methods: {
     refreshPage() {

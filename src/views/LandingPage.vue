@@ -84,23 +84,20 @@ export default Vue.extend({
       myMatchingCode: '',
       interval: 0,
       intervalCounter: 0,
-      intervalCounterMax: 3600,
+      intervalCounterMax: 600,
     };
   },
   beforeMount() {
     localStorage.removeItem('myMatchingCode');
     this.myMatchingCode = '';
   },
-  mounted() {
-    fetch(`${process.env.VUE_APP_BACKEND_URL}/myMatchingCode`)
-      .then((response) => response.text())
-      .then((response) => {
-        this.myMatchingCode = response;
-        localStorage.setItem('myMatchingCode', response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  async mounted() {
+    const matchingCodeResponse = await fetch(
+      `${process.env.VUE_APP_BACKEND_URL}/myMatchingCode`,
+    );
+    this.myMatchingCode = await matchingCodeResponse.text();
+    localStorage.setItem('myMatchingCode', this.myMatchingCode);
+
     this.interval = setInterval(async () => {
       this.intervalCounter += 1;
       if (this.intervalCounter === this.intervalCounterMax) {
@@ -140,7 +137,7 @@ export default Vue.extend({
         matchingCodes: [this.myMatchingCode, codeInput.substring(0, 6)],
       };
       if (data.matchingCodes[0] === data.matchingCodes[1]) {
-        return;
+        return; // TODO: Display error message
       }
       clearInterval(this.interval);
       fetch(`${process.env.VUE_APP_BACKEND_URL}/match`, {
