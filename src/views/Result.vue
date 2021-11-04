@@ -4,6 +4,7 @@
       <div v-if="commonPlaylistIdentifier === 'EMPTY'">
         <h1>No common tracks...😢</h1>
       </div>
+      <!-- // TODO: Sometimes when Spotify is last, there is an error -->
       <div v-else-if="musicApi === 'SPOTIFY'">
         <iframe
           :src="`https://open.spotify.com/embed/playlist/${commonPlaylistIdentifier}?theme=0`"
