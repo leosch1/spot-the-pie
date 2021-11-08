@@ -52,10 +52,12 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'Result',
   components: {},
+  props: {
+    musicApi: String,
+    musicApiToken: String,
+  },
   data() {
     return {
-      musicApi: '',
-      musicApiToken: '',
       generatingPlaylist: false,
       waitingForFriend: false,
       commonPlaylistIdentifier: '',
@@ -65,69 +67,62 @@ export default Vue.extend({
     };
   },
   mounted() {
-    const musicApi = this.$route.fullPath.match(/musicApi=([\w]+)/);
-    const result = this.$route.fullPath.match(/access_token=([%-\w]+)/);
-    if (result && musicApi) {
-      [, this.musicApi] = musicApi;
-      [, this.musicApiToken] = result;
-      this.musicApiToken = decodeURIComponent(this.musicApiToken);
-      fetch(`${process.env.VUE_APP_BACKEND_URL}/fetchSavedTracks`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          myMatchingCode: localStorage.myMatchingCode,
-          musicApi: this.musicApi,
-          musicApiToken: this.musicApiToken,
-        }),
-      }).then((response) => {
-        if (response.status !== 201) {
-          console.error(response);
-        } else {
-          this.interval = setInterval(async () => {
-            this.intervalCounter += 1;
-            if (this.intervalCounter === this.intervalCounterMax) {
-              clearInterval(this.interval);
-            }
-            const commonPlaylistResponse = await fetch(
-              `${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`,
-              {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  myMatchingCode: localStorage.myMatchingCode,
-                  musicApiToken: this.musicApiToken,
-                  musicApi: this.musicApi,
-                }),
-              },
-            );
+    fetch(`${process.env.VUE_APP_BACKEND_URL}/fetchSavedTracks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        myMatchingCode: sessionStorage.getItem('myMatchingCode'),
+        musicApi: this.musicApi,
+        musicApiToken: this.musicApiToken,
+      }),
+    }).then((response) => {
+      if (response.status !== 201) {
+        console.error(response);
+      } else {
+        this.interval = setInterval(async () => {
+          this.intervalCounter += 1;
+          if (this.intervalCounter === this.intervalCounterMax) {
+            clearInterval(this.interval);
+          }
+          const commonPlaylistResponse = await fetch(
+            `${process.env.VUE_APP_BACKEND_URL}/commonPlaylist`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                myMatchingCode: sessionStorage.getItem('myMatchingCode'),
+                musicApiToken: this.musicApiToken,
+                musicApi: this.musicApi,
+              }),
+            },
+          );
 
-            console.info(commonPlaylistResponse);
-            switch (commonPlaylistResponse.status) {
-              case 210:
-                this.waitingForFriend = true;
-                break;
-              case 211:
-                this.generatingPlaylist = true;
-                break;
-              case 212:
-                clearInterval(this.interval);
-                this.commonPlaylistIdentifier = 'EMPTY';
-                this.waitingForFriend = false;
-                this.generatingPlaylist = false;
-                break;
-              case 200:
-                clearInterval(this.interval);
-                this.commonPlaylistIdentifier = await commonPlaylistResponse.text();
-                this.waitingForFriend = false;
-                this.generatingPlaylist = false;
-                break;
-              default:
-                break;
-            }
-          }, 1000);
-        }
-      });
-    }
+          console.info(commonPlaylistResponse);
+          switch (commonPlaylistResponse.status) {
+            case 210:
+              this.waitingForFriend = true;
+              break;
+            case 211:
+              this.generatingPlaylist = true;
+              break;
+            case 212:
+              clearInterval(this.interval);
+              this.commonPlaylistIdentifier = 'EMPTY';
+              this.waitingForFriend = false;
+              this.generatingPlaylist = false;
+              break;
+            case 200:
+              clearInterval(this.interval);
+              this.commonPlaylistIdentifier = await commonPlaylistResponse.text();
+              this.waitingForFriend = false;
+              this.generatingPlaylist = false;
+              break;
+            default:
+              break;
+          }
+        }, 1000);
+      }
+    });
   },
   methods: {
     refreshPage() {

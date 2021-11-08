@@ -95,7 +95,7 @@ export default Vue.extend({
     };
   },
   beforeMount() {
-    localStorage.removeItem('myMatchingCode');
+    sessionStorage.removeItem('myMatchingCode');
     this.myMatchingCode = '';
   },
   async mounted() {
@@ -103,7 +103,7 @@ export default Vue.extend({
       `${process.env.VUE_APP_BACKEND_URL}/myMatchingCode`,
     );
     this.myMatchingCode = await matchingCodeResponse.text();
-    localStorage.setItem('myMatchingCode', this.myMatchingCode);
+    sessionStorage.setItem('myMatchingCode', this.myMatchingCode); // TODO: Replace with cookie
 
     this.interval = setInterval(async () => {
       this.intervalCounter += 1;
@@ -127,7 +127,8 @@ export default Vue.extend({
       }
       const matched = await response.json();
       if (matched) {
-        this.$router.push('/login');
+        sessionStorage.setItem('matched', 'true');
+        this.$router.push('/matchSuccessfull');
         clearInterval(this.interval);
       }
     }, 1000);
@@ -156,7 +157,8 @@ export default Vue.extend({
           console.error(await response.text());
           return;
         }
-        this.$router.push('/login');
+        sessionStorage.setItem('matched', 'true');
+        this.$router.push('/matchSuccessfull');
       });
     },
   },

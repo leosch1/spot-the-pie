@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
-import Login from '../views/Login.vue';
+import MatchSuccessfull from '../views/MatchSuccessfull.vue';
 import Result from '../views/Result.vue';
 
 Vue.use(VueRouter);
@@ -13,14 +13,38 @@ const routes: Array<RouteConfig> = [
     component: LandingPage,
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
+    path: '/matchSuccessfull',
+    name: 'MatchSuccessfull',
+    component: MatchSuccessfull,
+    beforeEnter: (to, from, next) => {
+      if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched')) next();
+      else next('/');
+    },
   },
   {
     path: '/result',
     name: 'Result',
+    props: true,
     component: Result,
+    beforeEnter: (to, from, next) => {
+      const resultMusicApi = to.fullPath.match(/musicApi=([\w]+)/);
+      const resultMusicApiToken = to.fullPath.match(/access_token=([%-\w]+)/);
+      if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched') && resultMusicApi && resultMusicApiToken) {
+        const [, musicApi] = resultMusicApi;
+        const [, musicApiToken] = resultMusicApiToken;
+        // eslint-disable-next-line no-param-reassign
+        to.params.musicApi = musicApi;
+        // eslint-disable-next-line no-param-reassign
+        to.params.musicApiToken = decodeURIComponent(musicApiToken);
+        next();
+      } else next('/');
+    },
+  },
+  {
+    path: '*',
+    beforeEnter: (to, from, next) => {
+      next('/');
+    },
   },
 ];
 

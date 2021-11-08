@@ -41,7 +41,7 @@ declare global {
 }
 
 export default Vue.extend({
-  name: 'Login',
+  name: 'matchSuccessfull',
   components: {
     Box,
   },
