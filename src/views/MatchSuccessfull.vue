@@ -5,12 +5,8 @@
       <p>Only one more step!</p>
       <p>Please log in using your Spotify account.</p>
     </Box>
-    <div style="flex-grow: 1"></div>
-    <v-img :src="require('../assets/running.gif')"> </v-img>
-    <div style="flex-grow: 1"></div>
     <v-btn
       class="button spotify"
-      rounded
       color="#1db954"
       x-large
       :href="`${backendURL}/loginSpotify`"
@@ -19,7 +15,6 @@
     </v-btn>
     <v-btn
       class="button appleMusic"
-      rounded
       color="#EEEEF0"
       x-large
       @click="loginWithAppleMusic"
@@ -69,15 +64,26 @@ export default Vue.extend({
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .wrapper h1 {
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   font-weight: 600;
   font-size: 24px;
 }
 
 .info-box {
   color: #b3b3b3;
+}
+
+.button {
+  &.spotify {
+    margin-top: 2.2rem;
+  }
+
+  &.appleMusic {
+    margin-top: 1.5rem;
+  }
 }
 </style>

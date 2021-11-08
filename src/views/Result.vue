@@ -1,41 +1,59 @@
 <template>
   <div class="wrapper">
-    <div v-if="commonPlaylistIdentifier" class="wrapper">
-      <div v-if="commonPlaylistIdentifier === 'EMPTY'">
-        <h1>No common tracks...😢</h1>
+    <div
+      v-if="commonPlaylistIdentifier"
+      class="d-flex justify-center align-center commonPlaylistWrapper"
+    >
+      <div
+        v-if="commonPlaylistIdentifier === 'EMPTY'"
+        class="d-flex flex-column"
+      >
+        <h1>No common tracks. 😢</h1>
+        <v-btn class="button accent--text" x-large to="/">Start Again</v-btn>
       </div>
       <!-- // TODO: Sometimes when Spotify is last, there is an error -->
-      <div v-else-if="musicApi === 'SPOTIFY'">
+      <div
+        v-else-if="musicApi === 'SPOTIFY'"
+        class="d-flex flex-column align-center spotify"
+      >
+        <h1>Yeah! Common tracks found! 🥳</h1>
         <iframe
           :src="`https://open.spotify.com/embed/playlist/${commonPlaylistIdentifier}?theme=0`"
           width="100%"
-          height="380"
+          height="100%"
           frameBorder="0"
           allowfullscreen=""
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         ></iframe>
       </div>
-      <div v-else-if="musicApi === 'APPLE_MUSIC'">
+      <div
+        v-else-if="musicApi === 'APPLE_MUSIC'"
+        class="d-flex flex-column align-center"
+      >
+        <h1>Yeah! Common tracks found! 🥳</h1>
         <v-btn
           class="button appleMusic"
-          rounded
           color="#EEEEF0"
           x-large
           :href="`https://music.apple.com/library/playlist/${commonPlaylistIdentifier}`"
           target="_blank"
+          >Open Playlist</v-btn
         >
-          Open Playlist on Apple Music
-        </v-btn>
       </div>
     </div>
-    <div v-else-if="generatingPlaylist">
-      <h1>Generating playlist..</h1>
+    <div
+      v-else-if="generatingPlaylist"
+      class="d-flex flex-column justify-center align-center"
+    >
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <h1>Generating playlist... 🔥</h1>
     </div>
     <div v-else-if="waitingForFriend">
-      <h1>Waiting for your friend to log in..</h1>
+      <h1>Waiting for your friend... 🙄</h1>
     </div>
-    <div v-else class="text-center">
+    <div v-else class="d-flex flex-column justify-center align-center">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <h1>Fetching your liked tracks... ⏳</h1>
     </div>
     <v-snackbar :value="intervalCounter === intervalCounterMax" :timeout="-1">
       <span class="mx-3">Timeout, Please refresh the page.</span>
@@ -137,11 +155,25 @@ export default Vue.extend({
   height: 100%;
   display: flex;
   flex-direction: column;
-}
+  justify-content: center;
 
-.wrapper h1 {
-  margin-bottom: 20px;
-  font-weight: 600;
-  font-size: 24px;
+  .commonPlaylistWrapper {
+    height: 100%;
+
+    .spotify {
+      height: 100%;
+    }
+  }
+
+  h1 {
+    margin: 1rem 0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+  }
+
+  .button {
+    width: auto;
+  }
 }
 </style>
