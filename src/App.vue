@@ -17,7 +17,7 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style lang="scss">
 body {
   background-color: #535353;
 }
@@ -31,9 +31,14 @@ body * {
   color: #ffffff;
 }
 
-.v-application .main * {
-  margin: 0;
-  padding: 0;
+.v-application .main {
+  p {
+    margin: 0;
+  }
+
+  ol {
+    padding: 0;
+  }
 }
 
 footer.v-footer.footer {

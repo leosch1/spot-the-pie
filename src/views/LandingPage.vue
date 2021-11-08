@@ -2,10 +2,10 @@
   <div class="wrapper">
     <h1>Spot-The-Pie</h1>
     <Box class="introduction">
-      <p>Ever struggled choosing songs both you and your friends like?</p>
+      <p>Struggling choosing songs both you and your friends like?</p>
       <p>
-        Generate a playlist with songs liked by both of you and push the party
-        vibe to the next level!
+        Spot-The-Pie generates a <span>Common Playlist</span> with songs liked
+        by both!
       </p>
     </Box>
     <v-img
@@ -14,11 +14,14 @@
     />
     <Box class="callToAction">
       <p>
-        Go to <a href="Spot-The-Pie.com" target="_blank">Spot-The-Pie.com</a> on
-        your friend’s phone and enter your matching code there. (Or the other
+        Go to
+        <a href="https://www.spot-the-pie.moti-app.com" target="_blank"
+          >Spot-The-Pie.moti-app.com</a
+        >
+        on your friend’s phone and enter your matching code there. (Or the other
         way around)
       </p>
-      <div class="d-flex justify-center align-center">
+      <div class="d-flex justify-center align-center my-1">
         <p class="matchingCodeLabel">Friend's matching code:</p>
         <div class="matchingCodeContainer">
           <v-text-field
@@ -40,21 +43,25 @@
         <span v-else> Loading... </span>
       </p>
     </Box>
+
+    <div class="logos">
+      <v-img contain :src="require('../assets/spotify-logo.svg')" />
+      <div class="spacer"></div>
+      <v-img contain :src="require('../assets/apple-music-logo.svg')" />
+    </div>
+
     <h2>How to use Spot-The-Pie?</h2>
     <v-row>
-      <v-col cols="6">
+      <v-col cols="7">
         <ol>
-          <li>
-            Enter your friend’s code on your device OR enter your code on your
-            friend’s device.
-          </li>
-          <li>Both log in with their Spotify account on own device.</li>
-          <li>Listen to the common playlist!</li>
+          <li>Match with code</li>
+          <li>Login to Spotify or Apple Music</li>
+          <li>Listen!</li>
         </ol>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="5">
         <v-img
-          :src="require('../assets/commonPlaylist.png')"
+          :src="require('../assets/common-playlist.png')"
           class="commonPlaylist"
         />
       </v-col>
@@ -157,10 +164,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  padding: 40px;
-}
-
 .wrapper h1 {
   margin-bottom: 20px;
   font-weight: 600;
@@ -169,17 +172,22 @@ export default Vue.extend({
 
 .introduction {
   color: #b3b3b3;
-}
 
-.introduction p:nth-child(1) {
-  margin-bottom: 4px;
+  p:nth-child(1) {
+    margin-bottom: 6px;
+  }
+
+  p span {
+    color: #1bb954;
+  }
 }
 
 .illustration {
-  margin: 20px 10px;
+  margin: 2px 0 30px 0;
 }
 
 .callToAction {
+  background-color: #5028f0;
   color: #ffffff;
 }
 
@@ -208,9 +216,19 @@ export default Vue.extend({
   color: #1db954;
 }
 
+.logos {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  margin: 20px auto;
+
+  .spacer {
+    width: 20px;
+  }
+}
+
 .wrapper h2 {
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin: 30px 0 10px 0;
   font-size: 20px;
 }
 
@@ -223,6 +241,6 @@ export default Vue.extend({
 }
 
 .commonPlaylist {
-  margin: 5px 15px 0 15px;
+  margin-top: 5px;
 }
 </style>

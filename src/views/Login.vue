@@ -67,7 +67,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .wrapper {
   height: 100%;
-  padding: 40px;
   display: flex;
   flex-direction: column;
 }
