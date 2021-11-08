@@ -128,7 +128,7 @@ export default Vue.extend({
       const matched = await response.json();
       if (matched) {
         sessionStorage.setItem('matched', 'true');
-        this.$router.push('/matchSuccessfull');
+        this.$router.push('/matchSuccessful');
         clearInterval(this.interval);
       }
     }, 1000);
@@ -158,7 +158,7 @@ export default Vue.extend({
           return;
         }
         sessionStorage.setItem('matched', 'true');
-        this.$router.push('/matchSuccessfull');
+        this.$router.push('/matchSuccessful');
       });
     },
   },

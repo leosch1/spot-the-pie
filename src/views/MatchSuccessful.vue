@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <h1>Successfull match!</h1>
+    <h1>Successful match!</h1>
     <Box class="info-box">
       <p>Only one more step!</p>
       <p>Please log in using your Spotify account.</p>
@@ -36,7 +36,7 @@ declare global {
 }
 
 export default Vue.extend({
-  name: 'matchSuccessfull',
+  name: 'matchSuccessful',
   components: {
     Box,
   },

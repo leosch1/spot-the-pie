@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
-import MatchSuccessfull from '../views/MatchSuccessfull.vue';
+import MatchSuccessful from '../views/MatchSuccessful.vue';
 import Result from '../views/Result.vue';
 
 Vue.use(VueRouter);
@@ -13,9 +13,9 @@ const routes: Array<RouteConfig> = [
     component: LandingPage,
   },
   {
-    path: '/matchSuccessfull',
-    name: 'MatchSuccessfull',
-    component: MatchSuccessfull,
+    path: '/matchSuccessful',
+    name: 'MatchSuccessful',
+    component: MatchSuccessful,
     beforeEnter: (to, from, next) => {
       if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched')) next();
       else next('/');
