@@ -17,7 +17,7 @@ const routes: Array<RouteConfig> = [
     name: 'MatchSuccessful',
     component: MatchSuccessful,
     beforeEnter: (to, from, next) => {
-      if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched')) next();
+      if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched') === 'true') next();
       else next('/');
     },
   },
@@ -29,7 +29,7 @@ const routes: Array<RouteConfig> = [
     beforeEnter: (to, from, next) => {
       const resultMusicApi = to.fullPath.match(/musicApi=([\w]+)/);
       const resultMusicApiToken = to.fullPath.match(/access_token=([%-\w]+)/);
-      if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched') && resultMusicApi && resultMusicApiToken) {
+      if (sessionStorage.getItem('myMatchingCode') && sessionStorage.getItem('matched') === 'true' && resultMusicApi && resultMusicApiToken) {
         const [, musicApi] = resultMusicApi;
         const [, musicApiToken] = resultMusicApiToken;
         // eslint-disable-next-line no-param-reassign

@@ -104,6 +104,7 @@ export default Vue.extend({
     );
     this.myMatchingCode = await matchingCodeResponse.text();
     sessionStorage.setItem('myMatchingCode', this.myMatchingCode); // TODO: Replace with cookie
+    sessionStorage.setItem('matched', 'false');
 
     this.interval = setInterval(async () => {
       this.intervalCounter += 1;
