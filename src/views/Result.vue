@@ -94,7 +94,7 @@ export default Vue.extend({
         musicApiToken: this.musicApiToken,
       }),
     }).then((response) => {
-      if (response.status !== 201) {
+      if (![200, 201].includes(response.status)) {
         console.error(response);
       } else {
         this.interval = setInterval(async () => {
