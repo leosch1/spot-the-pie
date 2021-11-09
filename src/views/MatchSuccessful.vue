@@ -15,7 +15,7 @@
     </v-btn>
     <v-btn
       class="button appleMusic"
-      color="#EEEEF0"
+      color="#eeeef0"
       x-large
       @click="loginWithAppleMusic"
     >

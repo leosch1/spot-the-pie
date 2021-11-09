@@ -11,20 +11,28 @@
         <h1>No common tracks. 😢</h1>
         <v-btn class="button accent--text" x-large to="/">Start Again</v-btn>
       </div>
-      <!-- // TODO: Sometimes when Spotify is last, there is an error -->
       <div
         v-else-if="musicApi === 'SPOTIFY'"
-        class="d-flex flex-column align-center spotify"
+        class="d-flex flex-column align-center"
       >
         <h1>Yeah! Common tracks found! 🥳</h1>
-        <iframe
-          :src="`https://open.spotify.com/embed/playlist/${commonPlaylistIdentifier}?theme=0`"
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          allowfullscreen=""
-        ></iframe>
+        <v-btn
+          class="button spotify"
+          color="#1db954"
+          x-large
+          :href="`https://open.spotify.com/playlist/${commonPlaylistIdentifier}`"
+          target="_blank"
+          >Open Playlist</v-btn
+        >
+        <!-- TODO: The embed widget is not always immediately available after creation. -->
+        <!-- <iframe
+          :src="`https://open.spotify.com/embed/playlist/${commonPlaylistIdentifier}`"
+          width="300"
+          height="380"
+          frameborder="0"
+          allowtransparency="true"
+          allow="encrypted-media"
+        ></iframe> -->
       </div>
       <div
         v-else-if="musicApi === 'APPLE_MUSIC'"
@@ -33,12 +41,13 @@
         <h1>Yeah! Common tracks found! 🥳</h1>
         <v-btn
           class="button appleMusic"
-          color="#EEEEF0"
+          color="#eeeef0"
           x-large
           :href="`https://music.apple.com/library/playlist/${commonPlaylistIdentifier}`"
           target="_blank"
-          >Open Playlist</v-btn
         >
+          Open Playlist
+        </v-btn>
       </div>
     </div>
     <div
@@ -159,10 +168,6 @@ export default Vue.extend({
 
   .commonPlaylistWrapper {
     height: 100%;
-
-    .spotify {
-      height: 100%;
-    }
   }
 
   h1 {
@@ -174,6 +179,10 @@ export default Vue.extend({
 
   .button {
     width: auto;
+
+    &.spotify {
+      margin-bottom: 1.5rem;
+    }
   }
 }
 </style>
