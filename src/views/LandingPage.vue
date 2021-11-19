@@ -44,11 +44,11 @@
       </p>
     </Box>
 
-    <div class="logos">
+    <!-- <div class="logos">
       <v-img contain :src="require('../assets/spotify-logo.svg')" />
       <div class="spacer"></div>
       <v-img contain :src="require('../assets/apple-music-logo.svg')" />
-    </div>
+    </div> -->
 
     <h2>How to use Spot-The-Pie?</h2>
     <v-row>
