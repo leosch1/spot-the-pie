@@ -81,7 +81,6 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'Result',
-  components: {},
   props: {
     musicApi: String,
     musicApiToken: String,

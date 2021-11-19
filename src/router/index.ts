@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
 import MatchSuccessful from '../views/MatchSuccessful.vue';
 import Result from '../views/Result.vue';
+import PrivacyPolicy from '../views/PrivacyPolicy.vue';
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes: Array<RouteConfig> = [
         next();
       } else next('/');
     },
+  },
+  {
+    path: '/privacyPolicy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy,
   },
   {
     path: '*',

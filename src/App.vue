@@ -4,7 +4,7 @@
       <router-view />
     </v-main>
     <v-footer class="footer" padless>
-      <span>{{ new Date().getFullYear() }} - Spot The Pie</span>
+      <span>Spot-The-Pie <router-link to="/privacyPolicy">Privacy Policy</router-link></span>
     </v-footer>
   </v-app>
 </template>
