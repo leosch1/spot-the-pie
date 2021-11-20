@@ -1,4 +1,4 @@
-# spot-the-pie
+# common-pie
 
 ## Project setup
 ```

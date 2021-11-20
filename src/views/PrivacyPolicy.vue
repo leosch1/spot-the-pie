@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h1>Privacy Policy</h1>
     <p>
-      <span>Spot-the-Pie</span> only stores your personal data up to 60 minutes.
+      <span>Common-Pie</span> only stores your personal data up to 60 minutes.
       It is automatically deleted afterwards.
     </p>
     <p>
@@ -10,14 +10,14 @@
       third-parties, except when required to by law.
     </p>
     <p>
-      Spot-the-Pie may link to external sites that are operated by others.
-      Please be aware that Spot-the-Pie has no control over the content and practices of
+      Common-Pie may link to external sites that are operated by others.
+      Please be aware that Common-Pie has no control over the content and practices of
       these sites, and cannot accept responsibility or liability for their
       respective privacy policies.
     </p>
     <p>
       Your continued use of the website will be regarded as acceptance of
-      practices around privacy and personal information on Spot-the-Pie.
+      practices around privacy and personal information on Common-Pie.
     </p>
     <p>This policy is effective as of 19 November 2021.</p>
   </div>

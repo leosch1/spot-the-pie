@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
-    <h1>Spot-The-Pie</h1>
+    <h1>Common-Pie</h1>
     <Box class="introduction">
       <p>Struggling choosing songs both you and your friends like?</p>
       <p>
-        Spot-The-Pie generates a <span>Common Playlist</span> with songs liked
+        Common-Pie generates a <span>Common Playlist</span> with songs liked
         by both!
       </p>
     </Box>
@@ -15,8 +15,8 @@
     <Box class="callToAction">
       <p>
         Go to
-        <a href="https://www.spot-the-pie.moti-app.com" target="_blank"
-          >Spot-The-Pie.moti-app.com</a
+        <a href="https://www.common-pie.moti-app.com" target="_blank"
+          >Common-Pie.moti-app.com</a
         >
         on your friend’s phone and enter your matching code there. (Or the other
         way around)
@@ -50,7 +50,7 @@
       <v-img contain :src="require('../assets/apple-music-logo.svg')" />
     </div> -->
 
-    <h2>How to use Spot-The-Pie?</h2>
+    <h2>How to use Common-Pie?</h2>
     <v-row>
       <v-col cols="7">
         <ol>
