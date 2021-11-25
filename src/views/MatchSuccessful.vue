@@ -13,7 +13,7 @@
     >
       Use Spotify
     </v-btn>
-    <!-- <v-btn TODO: Add back
+    <!-- <v-btn TODO: Put back in
       class="button appleMusic"
       color="#eeeef0"
       x-large
@@ -44,17 +44,17 @@ export default Vue.extend({
     backendURL: () => process.env.VUE_APP_BACKEND_URL,
   },
   methods: {
-    async loginWithAppleMusic() {
-      const music = window.MusicKit.getInstance();
-      const token: string = await music.authorize();
-      if (token && token.length) {
-        this.$router.push(
-          `/result?musicApi=APPLE_MUSIC&access_token=${encodeURIComponent(
-            token,
-          )}`,
-        );
-      }
-    },
+    // async loginWithAppleMusic() { // TODO: Put back in
+    //   const music = window.MusicKit.getInstance();
+    //   const token: string = await music.authorize();
+    //   if (token && token.length) {
+    //     this.$router.push(
+    //       `/result?musicApi=APPLE_MUSIC&access_token=${encodeURIComponent(
+    //         token,
+    //       )}`,
+    //     );
+    //   }
+    // },
   },
 });
 </script>

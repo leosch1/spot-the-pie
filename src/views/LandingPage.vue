@@ -47,7 +47,7 @@
       </p>
     </Box>
 
-    <!-- <div class="logos">
+    <!-- <div class="logos"> TODO: Put back in
       <v-img contain :src="require('../assets/spotify-logo.svg')" />
       <div class="spacer"></div>
       <v-img contain :src="require('../assets/apple-music-logo.svg')" />
@@ -58,7 +58,8 @@
       <v-col cols="7">
         <ol>
           <li>Match with code</li>
-          <li>Login to Spotify or Apple Music</li>
+          <!-- <li>Login to Spotify or Apple Music</li> TODO: Put back in -->
+          <li>Login to Spotify</li>
           <li>Listen!</li>
         </ol>
       </v-col>
