@@ -4,8 +4,8 @@
     <Box class="introduction">
       <p>Struggling choosing songs both you and your friends like?</p>
       <p>
-        Common-Pie generates a <span>Common Playlist</span> with songs liked
-        by both!
+        Common-Pie generates a <span>Common Playlist</span> with songs liked by
+        both!
       </p>
     </Box>
     <v-img
@@ -18,8 +18,11 @@
         <a href="https://common-pie.moti-app.com" target="_blank"
           >Common-Pie.moti-app.com</a
         >
-        on your friend’s phone and enter your matching code there. (Or the other
-        way around)
+        on your friend’s phone and enter your matching code there. (By doing
+        that you agree to the
+        <router-link class="privacyPolicyLink" to="/privacyPolicy">
+          <u>Privacy Policy</u>
+        </router-link>.)
       </p>
       <div class="d-flex justify-center align-center my-1">
         <p class="matchingCodeLabel">Friend's matching code:</p>
@@ -197,6 +200,10 @@ export default Vue.extend({
 .callToAction a {
   color: #1bb954;
   text-decoration: none;
+}
+
+.callToAction .privacyPolicyLink {
+  color: white;
 }
 
 .matchingCodeLabel {
