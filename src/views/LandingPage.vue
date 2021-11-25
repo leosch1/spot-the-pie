@@ -15,7 +15,7 @@
     <Box class="callToAction">
       <p>
         Go to
-        <a href="https://www.common-pie.moti-app.com" target="_blank"
+        <a href="https://common-pie.moti-app.com" target="_blank"
           >Common-Pie.moti-app.com</a
         >
         on your friend’s phone and enter your matching code there. (Or the other
