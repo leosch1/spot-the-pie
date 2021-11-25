@@ -13,14 +13,14 @@
     >
       Use Spotify
     </v-btn>
-    <v-btn
+    <!-- <v-btn TODO: Add back
       class="button appleMusic"
       color="#eeeef0"
       x-large
       @click="loginWithAppleMusic"
     >
       Use Apple Music
-    </v-btn>
+    </v-btn> -->
   </div>
 </template>
 
