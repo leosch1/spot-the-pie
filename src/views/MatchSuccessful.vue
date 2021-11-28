@@ -3,7 +3,7 @@
     <h1>Successful match!</h1>
     <Box class="info-box">
       <p>Only one more step!</p>
-      <p>Please log in using your Spotify account.</p>
+      <p>Please log in using your Spotify or Apple Music account.</p>
     </Box>
     <v-btn
       class="button spotify"
@@ -13,14 +13,14 @@
     >
       Use Spotify
     </v-btn>
-    <!-- <v-btn TODO: Put back in
+    <v-btn
       class="button appleMusic"
       color="#eeeef0"
       x-large
       @click="loginWithAppleMusic"
     >
       Use Apple Music
-    </v-btn> -->
+    </v-btn>
   </div>
 </template>
 
@@ -44,17 +44,17 @@ export default Vue.extend({
     backendURL: () => process.env.VUE_APP_BACKEND_URL,
   },
   methods: {
-    // async loginWithAppleMusic() { // TODO: Put back in
-    //   const music = window.MusicKit.getInstance();
-    //   const token: string = await music.authorize();
-    //   if (token && token.length) {
-    //     this.$router.push(
-    //       `/result?musicApi=APPLE_MUSIC&access_token=${encodeURIComponent(
-    //         token,
-    //       )}`,
-    //     );
-    //   }
-    // },
+    async loginWithAppleMusic() {
+      const music = window.MusicKit.getInstance();
+      const token: string = await music.authorize();
+      if (token && token.length) {
+        this.$router.push(
+          `/result?musicApi=APPLE_MUSIC&access_token=${encodeURIComponent(
+            token,
+          )}`,
+        );
+      }
+    },
   },
 });
 </script>

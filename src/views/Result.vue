@@ -34,7 +34,7 @@
           allow="encrypted-media"
         ></iframe> -->
       </div>
-      <!-- <div TODO: Put back in
+      <div
         v-else-if="musicApi === 'APPLE_MUSIC'"
         class="d-flex flex-column align-center"
       >
@@ -48,7 +48,7 @@
         >
           Open Playlist
         </v-btn>
-      </div> -->
+      </div>
     </div>
     <div
       v-else-if="generatingPlaylist"
