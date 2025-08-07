@@ -75,6 +75,37 @@
         <v-btn color="#1bb954" small text @click="refreshPage">Refresh</v-btn>
       </template>
     </v-snackbar>
+
+    <!-- Service Notice Dialog -->
+    <v-dialog v-model="showNoticeDialog" max-width="500" persistent>
+      <v-card>
+        <v-card-title class="headline">
+          <v-icon left color="warning">mdi-information</v-icon>
+          Service Notice
+        </v-card-title>
+        <v-card-text>
+          <p class="mb-3">
+            <strong>Important Update:</strong> Spotify has now implemented their own feature called
+            <strong>Spotify Blend Playlists</strong> that creates playlists with songs that two
+            people both like.
+          </p>
+          <p class="mb-3">
+            Since this feature makes Common-Pie (Spot-The-Pie) redundant, I have shut down the
+            backend service. The playlist creation functionality will no longer work.
+          </p>
+          <p>
+            Thank you for using Common-Pie! We recommend trying out Spotify's Blend Playlists
+            for creating shared playlists with friends.
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closeNoticeDialog">
+            Got it
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -95,6 +126,7 @@ export default Vue.extend({
       interval: 0,
       intervalCounter: 0,
       intervalCounterMax: 600,
+      showNoticeDialog: true,
     };
   },
   beforeMount() {
@@ -140,6 +172,9 @@ export default Vue.extend({
   methods: {
     refreshPage() {
       window.location.reload();
+    },
+    closeNoticeDialog() {
+      this.showNoticeDialog = false;
     },
     inputMatchingCode(codeInput: string) {
       if (codeInput.length < 6) {
